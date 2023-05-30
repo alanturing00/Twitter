@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block content %}
+<br/><br/>
+<div class='col-md-6 offset-md-3'>
+    <h2>Edit your profile information</h2><br/><br/> 
+    <form method="POST" action=''>
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <br/>
+        <input type=submit class='btn btn-primary' value='update!'>
+
+    </form>
+</div>
+{% endblock %}

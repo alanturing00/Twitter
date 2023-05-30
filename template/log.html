@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<br/>
+{% if user.is_authenticated %}
+<center><h2>you already loggedin</h2>
+<a href='{% url "Twitt:home" %}'>Home</a><center>
+{% else %}
+    <div class='col-md-6 offset-md-3'>
+        <h1>Login</h1><br/>
+        <form method=POST  action="{% url 'Twitt:logsin' %}">
+            {% csrf_token %}
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder='Enter your username here!' name='username'><br/>
+            <div class="mb-3">
+              <input type="password" class="form-control" name= 'password'  placeholder='Enter your password here!'>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+    </div>
+{% endif %}
+{% endblock %}

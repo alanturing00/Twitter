@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+<div class="container" text-center'>
+    <div class ='row'>
+        <div class='col-8'>
+            <br><h1>{{ profile.user.username }} Twitter</h1><br/>
+            {% for twit in twitt %}
+                <div class="card" style="width: 35rem;">
+                    <div class="card-body">
+                        
+
+                        <div class='container'>
+                            <div class='row'>
+                                <div class='col-1'>
+                                    {% if twit.user.profile.user_photo %}
+                                    <img src='{{ twit.user.profile.user_photo.url }}' class='rounded-circle' width=50 height=50>
+                                    {% else %}
+                                    <img src='{% static "accounts/images/Untitled.png" %}' class='rounded-circle' width=50 height=50>
+                                    {% endif %}
+
+                                </div>
+                                <div class='col-11'
+                        <p class="card-text">@{{ twit.user }}<br/>at {{ twit.published }}
+                            <b><a href='{% url "Twitt:individoual_twitt" %} '><p class="card-text">{{twit.body}}</a> {{ twit.like.count }} Likes</p> 
+                            {% if user  in twit.like.all %}
+                                <a href='{% url "Twitt:like_twitt" twit.id %}'>UnLike</a></b>
+                                {% else %}
+                                <a href='{% url "Twitt:like_twitt" twit.id %}'>Like</a></b>{% endif %}
+                    </div>
+                </div></div></div>
+                </div><br/>
+            {% endfor %}
+        </div>
+        {% if form %}
+        <div class='col-4'>
+            <br/>
+            <form method=POST>
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Tweet</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+
+</div>
+{% endblock %}

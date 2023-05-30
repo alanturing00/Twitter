@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+{% if profile %}
+    <div class="container" text-center'>
+        <div class ='row'>
+            <div class='col-8'><br/>
+                <h1>{{ profile.user.username }} profile</h1><br/>
+                {% for twit in twitt %}
+                    <div class="card" style="width: 35rem;">
+                        <div class='container'>
+                            <div class='row'>
+                                <div class='col-1'>
+                                    {% if profile.user_photo %}
+                                    <img src='{{ profile.user_photo.url }}' class='rounded-circle' width=50 height=50>
+                                    {% else %}
+                                    <img src='{% static "accounts/images/Untitled.png" %}' class='rounded-circle' width=50 height=50>
+                                    {% endif %}
+                                </div>
+                                <div class='col-10'
+                        <div class="card-body">
+                            <p class="card-text">@{{ twit.user }}<br/>at {{ twit.published }}
+                            <b><p class="card-text">{{twit.body}} {{ twit.like.count }}Likes</p></b>
+                            {% if user  in twit.like.all %}
+                                <a href='{% url "Twitt:like_twitt" twit.id %}'>UnLike</a></b>
+                                {% else %}
+                                <a href='{% url "Twitt:like_twitt" twit.id %}'>Like</a></b>{% endif %}
+                            {% comment %} <p class="card-text">{{ twit.body }}</p> {% endcomment %}
+                            {% comment %} <img src="..." class="card-img-top" alt="..."> {% endcomment %}
+                        </div>
+
+                    </div></div></div>
+                      <br/>
+                {% endfor %}
+            </div>
+            <div class='col-4'>
+                <br/>
+                    {% if profile.user_photo %}
+                    <div class="image">
+                        &emsp;<img  src='{{ profile.user_photo.url }}'></div>
+                    {% else %}
+                    <div class="image">
+                        &emsp;<img  src='{% static "accounts/images/Untitled.png" %}'></div>
+                    {% endif %}
+                    {% if request.user.id == profile.user.id %}
+                        <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                            <div class="card-header">setting</div>
+                            {% comment %} <div class="card-body"> {% endcomment %}
+                                {% comment %} <input type='submit' url='{% url "update_user_info" %}'>Edit Profile</a> {% endcomment %}
+                                <br/>
+                                <a href="{% url 'Twitt:editeuserinfo' %}"<button type=submit value=follow class='btn btn-primary' name='follow'>Edit my info</button></a>
+                                <br/>
+                                <a href="{% url 'Twitt:password_change' %}"<button type=submit value=follow class='btn btn-primary' name='follow'>Change my password</button></a>
+                                <br/>
+                                <a href="{% url 'Twitt:updateprofilepic' %}"<button type=submit value=follow class='btn btn-primary' name='follow'>Update Profile</button></a>
+                            {% comment %} </div> {% endcomment %}
+                        </div>
+                        {% endif %}
+                    
+
+
+                <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">follows</div>
+                    <div class="card-body">
+                        {% for following in profile.follows.all %}
+                            {% if following.user_photo %}
+                            <div class="imagefollow">
+                                &emsp;<img  src='{{ following.user_photo.url }}' class='rounded-circle'></div>
+                            {% else %}
+                            <div class="imagefollow">
+                                &emsp;<img  src='{% static "accounts/images/Untitled.png" %}' class='rounded-circle'></div>
+                            {% endif %}
+                            <a href='{% url "Twitt:profile" following.user.id %}'>@{{ following}}</a><br/><br/>
+                        {% empty %}
+                            add new friends to grow your network --><a href='{% url "Twitt:profilelist" %}'>People</a>
+                        {% endfor %}
+                    </div>
+                </div>
+
+
+
+                
+                <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">followed by</div>
+                    <div class="card-body">
+                        {% for following in profile.followed_by.all %}
+                            {% if following.user_photo %}
+                                <div class="imagefollow">
+                                    &emsp;<img  src='{{ following.user_photo.url }}' class='rounded-circle'></div>
+                            {% else %}
+                                <div class="imagefollow">
+                                    &emsp;<img  src='{% static "accounts/images/Untitled.png" %}' class='rounded-circle'></div>
+                            {% endif %}
+                            <p class='card-text'><a href='{% url "Twitt:profile" following.user.id %}'>@{{ following}}</a></p>
+                        {% empty %}
+                            u dont have connecting
+
+                        {% endfor %}
+                    </div>
+                </div>
+                <form method=POST>
+                    {% csrf_token %}
+                    {% if request.user.id == profile.user.id %}
+                    {% else %}
+                    {% if profile in user.profile.follows.all %}
+                        <button type=submit value=unfollow class='btn btn-danger' name='follow'>Unfollow @{{ profile.user.username}}</button>
+                    {% else %}
+                        <button type=submit value=follow class='btn btn-primary' name='follow'>follow @{{ profile.user.username}}</button>
+                    {% endif %}{% endif %}
+                </form>
+                
+
+                
+
+
+
+            </div>
+        </div>
+    </div>
+
+{% endif %}
+{% endblock %}

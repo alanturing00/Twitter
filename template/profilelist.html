@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load static  %}
+{% block content %}
+<div class="container" text-center'>
+  <div class ='row'>
+      <div class='col-8'>
+          <br><h1>{{ profile.user.username }} Profile List</h1><br/>
+          {% if profiles %}
+    {% for profile in profiles %}
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+          <div class="col-md-4">
+            {% if profile.user_photo %}
+            <img  src='{{ profile.user_photo.url }}' width=175 height=175>
+            {% else %}
+            <img src="{% static 'accounts/images/Untitled.png' %}" class="img-fluid rounded-start" alt="profile image">
+          
+          {% endif %}</div>
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ profile.user.username}}</h5>
+              <p class="card-text"><a href='{% url "Twitt:profile" profile.user.id %}'>@{{ profile.user.username|lower}}</a></p>
+              <p class="card-text"><small class="text-body-secondary">{{ profile.update }}</small></p>
+            </div>
+          </div>
+        </div>
+      </div><br/><br/>
+    {% endfor %}
+{% endif %}
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
